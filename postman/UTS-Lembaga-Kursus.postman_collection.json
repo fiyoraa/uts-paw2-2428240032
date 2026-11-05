@@ -1,0 +1,94 @@
+{
+  "info": {
+    "name": "UTS Lembaga Kursus",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "apiKey", "value": "rahasia-lokal" },
+    { "key": "instrukturId", "value": "" },
+    { "key": "kursusId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health check",
+      "request": { "method": "GET", "url": "{{baseUrl}}/" }
+    },
+    {
+      "name": "Instruktur",
+      "item": [
+        {
+          "name": "List instruktur",
+          "request": { "method": "GET", "url": "{{baseUrl}}/instruktur" }
+        },
+        {
+          "name": "Create instruktur",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"kode\":\"INS03\",\"nama\":\"Citra Lestari\"}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/instruktur"
+          }
+        },
+        {
+          "name": "Get instruktur by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/instruktur/{{instrukturId}}" }
+        }
+      ]
+    },
+    {
+      "name": "Kursus",
+      "item": [
+        {
+          "name": "List kursus dengan filter dan projection",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/kursus?level=menengah&page=1&limit=10&sort=biaya&order=desc&fields=kodeKursus,judul,biaya,level,jadwal,instrukturId"
+          }
+        },
+        {
+          "name": "Create kursus",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"kodeKursus\":\"KRS003\",\"judul\":\"Desain Grafis\",\"biaya\":800000,\"level\":\"lanjut\",\"jadwal\":{\"hari\":\"Jumat\",\"jam\":\"16:00\"},\"instrukturId\":\"{{instrukturId}}\"}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/kursus"
+          }
+        },
+        {
+          "name": "Get kursus by id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/kursus/{{kursusId}}" }
+        },
+        {
+          "name": "Update kursus",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"biaya\":850000,\"level\":\"lanjut\"}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": "{{baseUrl}}/kursus/{{kursusId}}"
+          }
+        },
+        {
+          "name": "Delete kursus",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+            "url": "{{baseUrl}}/kursus/{{kursusId}}"
+          }
+        }
+      ]
+    }
+  ]
+}

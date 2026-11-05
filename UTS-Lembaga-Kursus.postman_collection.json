@@ -1,0 +1,159 @@
+{
+  "info": {
+    "name": "UTS Lembaga Kursus - Urutan Laporan",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "apiKey", "value": "rahasia-lokal" },
+    { "key": "instrukturId", "value": "" },
+    { "key": "kursusId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. POST /instruktur - 201 (C1, B3)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"kode\":\"INS03\",\"nama\":\"Citra Lestari\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/instruktur"
+      }
+    },
+    {
+      "name": "2. POST /instruktur kode sama - 409",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"kode\":\"INS03\",\"nama\":\"Citra Duplikat\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/instruktur"
+      }
+    },
+    {
+      "name": "3. GET /instruktur - 200",
+      "request": { "method": "GET", "url": "{{baseUrl}}/instruktur" }
+    },
+    {
+      "name": "4. POST /kursus - 201 (C1, B3)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"kodeKursus\":\"KRS003\",\"judul\":\"Desain Grafis\",\"biaya\":800000,\"level\":\"lanjut\",\"jadwal\":{\"hari\":\"Jumat\",\"jam\":\"16:00\"},\"instrukturId\":\"{{instrukturId}}\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/kursus"
+      }
+    },
+    {
+      "name": "5. POST /kursus kode sama - 409",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"kodeKursus\":\"KRS003\",\"judul\":\"Kursus Duplikat\",\"biaya\":500000,\"level\":\"dasar\",\"jadwal\":{\"hari\":\"Senin\",\"jam\":\"10:00\"},\"instrukturId\":\"{{instrukturId}}\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/kursus"
+      }
+    },
+    {
+      "name": "6. POST /kursus tanpa teks judul - 400 + detail",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"kodeKursus\":\"KRS004\",\"biaya\":500000,\"level\":\"dasar\",\"jadwal\":{\"hari\":\"Senin\",\"jam\":\"10:00\"},\"instrukturId\":\"{{instrukturId}}\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/kursus"
+      }
+    },
+    {
+      "name": "7. POST /kursus angka biaya di bawah minimum - 400",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"kodeKursus\":\"KRS005\",\"judul\":\"Biaya Tidak Valid\",\"biaya\":-1,\"level\":\"dasar\",\"jadwal\":{\"hari\":\"Senin\",\"jam\":\"10:00\"},\"instrukturId\":\"{{instrukturId}}\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/kursus"
+      }
+    },
+    {
+      "name": "8. GET /kursus - 200 array",
+      "request": { "method": "GET", "url": "{{baseUrl}}/kursus" }
+    },
+    {
+      "name": "9. GET /kursus?level=menengah - 200 data cocok",
+      "request": { "method": "GET", "url": "{{baseUrl}}/kursus?level=menengah" }
+    },
+    {
+      "name": "10. GET /kursus?level=tidakada - 200 array kosong",
+      "request": { "method": "GET", "url": "{{baseUrl}}/kursus?level=tidakada" }
+    },
+    {
+      "name": "11. GET /kursus projection - 200 field terbatas",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/kursus?fields=kodeKursus,judul,biaya,level"
+      }
+    },
+    {
+      "name": "12. GET /kursus/:id - 200 populate referencing",
+      "request": { "method": "GET", "url": "{{baseUrl}}/kursus/{{kursusId}}" }
+    },
+    {
+      "name": "13. GET /kursus/:id tidak ada - 404",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/kursus/000000000000000000000000"
+      }
+    },
+    {
+      "name": "14. PUT /kursus/:id - 200",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"biaya\":850000,\"level\":\"lanjut\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/kursus/{{kursusId}}"
+      }
+    },
+    {
+      "name": "15. DELETE /kursus/:id - 200",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "x-api-key", "value": "{{apiKey}}" }],
+        "url": "{{baseUrl}}/kursus/{{kursusId}}"
+      }
+    },
+    {
+      "name": "Tambahan. POST tanpa x-api-key - 401",
+      "request": {
+        "method": "POST",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"kodeKursus\":\"KRS006\",\"judul\":\"Tanpa API Key\",\"biaya\":100,\"level\":\"dasar\",\"jadwal\":{\"hari\":\"Selasa\",\"jam\":\"10:00\"},\"instrukturId\":\"{{instrukturId}}\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "{{baseUrl}}/kursus"
+      }
+    }
+  ]
+}
